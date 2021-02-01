@@ -9,7 +9,7 @@ object CurrencyServiceConverter extends CurrencyService {
   implicit val formats: DefaultFormats.type = DefaultFormats
   def convert(req : String): HttpRequest = {
     val charset: ContentType.WithFixedCharset = ContentType(MediaTypes.`application/json`)
-    HttpRequest(uri = "http://localhost:9000/currency")
+    HttpRequest(uri = "http://172.25.0.22:9009/currency")
       .withMethod(HttpMethods.POST)
       .withEntity(charset,"[" + req + "]")
   }

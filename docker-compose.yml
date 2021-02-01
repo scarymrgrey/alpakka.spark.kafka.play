@@ -165,10 +165,9 @@ services:
       kafkanet:
         ipv4_address: 172.25.0.19
       
-  applications:
-    build: .
+  spark-application:
+    build: ./services/spark.restconsumer/
     depends_on:
-      - "prometheus"
       - "zookeeper"
       - "kafka1"
       - "kafka2"
@@ -179,6 +178,35 @@ services:
     networks:
       kafkanet:
         ipv4_address: 172.25.0.20
+        
+  kafka-producer:
+    build: ./services/kafka.producer/
+    depends_on:
+      - "zookeeper"
+      - "kafka1"
+      - "kafka2"
+      - "kafka_manager"
+    networks:
+      kafkanet:
+        ipv4_address: 172.25.0.21
+        
+  play:
+    build: ./services/play.currencyapi/
+    ports:
+      - "9009:9000"
+    networks:
+      kafkanet:
+        ipv4_address: 172.25.0.22
+        
+  alpakka:
+    build: ./services/alpakka.http.consumer/
+    depends_on:
+      - "zookeeper"
+      - "kafka1"
+      - "kafka2"
+    networks:
+      kafkanet:
+        ipv4_address: 172.25.0.23
       
 
 networks:
