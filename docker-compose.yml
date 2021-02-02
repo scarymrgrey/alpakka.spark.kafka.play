@@ -190,8 +190,8 @@ services:
       kafkanet:
         ipv4_address: 172.25.0.21
         
-  play:
-    build: ./services/play.currencyapi/
+  core:
+    build: ./services/core.currency-api/
     ports:
       - "9009:9000"
     networks:
@@ -204,6 +204,7 @@ services:
       - "zookeeper"
       - "kafka1"
       - "kafka2"
+      - "core"
     networks:
       kafkanet:
         ipv4_address: 172.25.0.23
