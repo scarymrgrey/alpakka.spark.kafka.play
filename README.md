@@ -68,6 +68,8 @@ Due to absence of **coroutines** in Java and Scala (they could offer only subrou
 The only thing which could offer Scala is **blocking { ... }** construct for Futures. Which is a plantain leaf from gunshot wound. Its only spawn another thread to the thread pool in order to compensate this blocking call.
 The solution could be some kind of [**cooperative multitasking**](https://en.wikipedia.org/wiki/Cooperative_multitasking) based on **coroutines** (https://en.wikipedia.org/wiki/Coroutine) like C# or Go can do. But unfortunatelly Scala is so Scala, its plugin-based fan's implementation died years ago.    
 
+[My previous naive solution: Github](https://github.com/scarymrgrey/spark.restconsumer)
+
 ##### Solution
 ![](images/idea.jpg)
 The basic idea was to avoid constucions like ~~Await.result(request, 0 nanos)~~ withing Spark execution environment. Instead of this **Kafka** with **Alpakka** were used.
