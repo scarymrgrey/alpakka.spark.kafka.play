@@ -119,9 +119,9 @@ services:
       kafkanet:
         ipv4_address: 172.25.0.16
   
-  spark:        
+  spark-master:        
     image: docker.io/bitnami/spark:3-debian-10
-    container_name: spark
+    container_name: spark-master
     environment:
       - SPARK_MODE=master
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
@@ -168,7 +168,7 @@ services:
   spark-application:
     build: ./services/spark.restconsumer/
     environment:
-      SPARK_MASTER: 'spark://172.25.0.17:7077'
+      SPARK_MASTER: 'local'
     depends_on:
       - "zookeeper"
       - "kafka1"
@@ -176,7 +176,7 @@ services:
       - "kafka_manager"
       - "spark-worker-1"
       - "spark-worker-2"
-      - "spark"
+      - "spark-master"
     networks:
       kafkanet:
         ipv4_address: 172.25.0.20
@@ -202,6 +202,7 @@ services:
         
   alpakka:
     build: ./services/alpakka.http.consumer/
+    container_name: alpakka
     depends_on:
       - "zookeeper"
       - "kafka1"
