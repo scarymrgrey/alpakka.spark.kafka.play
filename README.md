@@ -63,8 +63,13 @@ docker stats
 
 #### Non-blocking requests
 
-![](images/idea.jpg)
+##### Motivation
+Due to absence of **coroutines** in Java and Scala (they could offer only subroutines) it is a problem to write non-blocking code on frameworks which do not support it directly by their API (like Spark).
+The only thing which could offer Scala is **blocking { ... }** construct for Futures. Which is a plantain leaf from gunshot wound. Its only spawn another thread to the thread pool in order to compensate this blocking call.
+The solution could be some kind of [**cooperative multitasking**](https://en.wikipedia.org/wiki/Cooperative_multitasking) based on **coroutines** (https://en.wikipedia.org/wiki/Coroutine) like C# or Go can do. But unfortunatelly Scala is so Scala, its plugin-based fan's implementation died years ago.    
 
+##### Solution
+![](images/idea.jpg)
 The basic idea was to avoid constucions like ~~Await.result(request, 0 nanos)~~ withing Spark execution environment. Instead of this **Kafka** with **Alpakka** were used.
 Spark is playing role of messages mediator, but it could do some transformations (joins, maps, aggs and etc) in real-world solution.
 Apache spark cluster just put messages asynchronously in the queue where Alpakka will process them.
