@@ -2,7 +2,7 @@
 ![GitHub](https://img.shields.io/badge/Version-0.0.1-lightgrey.svg)
 ![GitHub](https://img.shields.io/badge/License-MIT-blue.svg)
 
-# Spark high-throughput non-blocking HTTP requests
+# Spark high-throughput non-blocking HTTP requests (Akka streams (Alpakka) + Kafka + Spark + WebApi(dotnet core))
 
 The basic infrastructure (kafka cluster + manager, grafana, prometeus) was taken from [THIS-repo](https://github.com/EthicalML/kafka-spark-streaming-zeppelin-docker). Thank you!
 
@@ -11,14 +11,16 @@ The basic infrastructure (kafka cluster + manager, grafana, prometeus) was taken
 <table>
 <tr>
 <td style="width: 100%">
+<h2>Non blocking Spark</h2>
+<img src="images/idea.jpg" alt="">
+</td>
+</tr>
+<tr>
+<td style="width: 100%">
 <h2>Monitoring with grafana</h2>
 <img src="images/grafanakafka.jpg" alt="">
 </td>
 </tr>
-<td style="width: 100%">
-<h2>Non blocking Spark</h2>
-<img src="images/idea.jpg" alt="">
-</td>
 </table>
 
 ## Detail Summary
@@ -62,10 +64,10 @@ docker stats
 
 ![](images/idea.jpg)
 
-The basic idea was to avoid constucions like `Await.result(request, 0 nanos)' withing Spark execution environment. Instead of this Kafka queue with Alpakka were used.
+The basic idea was to avoid constucions like ~~Await.result(request, 0 nanos)~~ withing Spark execution environment. Instead of this **Kafka** with **Alpakka** were used.
 Spark is playing role of messages mediator, but it could do some transformations (joins, maps, aggs and etc) in real-world solution.
 Apache spark cluster just put messages asynchronously in the queue where Alpakka will process them.
-Producer ===> Spark ===> Alpakka ===> WebApi (dotnet core).
+Producer ===> Spark ===> Alpakka(Akka streams) ===> WebApi (dotnet core).
 Entire pipeline is aschronous , concurrent and non-blocking from the top to bottom.
 
 
