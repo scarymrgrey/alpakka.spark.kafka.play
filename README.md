@@ -2,8 +2,9 @@
 ![GitHub](https://img.shields.io/badge/Version-0.0.1-lightgrey.svg)
 ![GitHub](https://img.shields.io/badge/License-MIT-blue.svg)
 
-# Spark high-throughput non-blocking HTTP requests (Akka streams (Alpakka) + Kafka + Spark + WebApi(dotnet core))
+# Spark high-throughput non-blocking HTTP requests 
 
+# (Akka streams (Alpakka) + Kafka + Spark + WebApi(dotnet core))
 The basic infrastructure (kafka cluster + manager, grafana, prometeus) was taken from [THIS-repo](https://github.com/EthicalML/kafka-spark-streaming-zeppelin-docker). Thank you!
 
 ## Overview:
