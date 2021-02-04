@@ -184,6 +184,9 @@ services:
         
   kafka-producer:
     build: ./services/kafka.producer/
+    environment:
+      BOOTSTRAP_SERVERS: '172.25.0.12:29092'
+      DELAY : 'false'
     depends_on:
       - "zookeeper"
       - "kafka1"

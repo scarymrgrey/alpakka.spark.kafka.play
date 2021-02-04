@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/spark.kafkaproducer.iml" filepath="$PROJECT_DIR$/.idea/modules/spark.kafkaproducer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/spark.kafkaproducer-build.iml" filepath="$PROJECT_DIR$/.idea/modules/spark.kafkaproducer-build.iml" />
     </modules>
   </component>
 </project>
