@@ -4,7 +4,7 @@
 
 # Spark high-throughput non-blocking HTTP requests
 
-The base infrastructure(kafka cluster, grafana, prometeus) was taken [THIS-repo](https://github.com/EthicalML/kafka-spark-streaming-zeppelin-docker)
+The basic infrastructure (kafka cluster + manager, grafana, prometeus) was taken from [THIS-repo](https://github.com/EthicalML/kafka-spark-streaming-zeppelin-docker). Thank you!
 
 ## High level features:
 
@@ -14,13 +14,11 @@ The base infrastructure(kafka cluster, grafana, prometeus) was taken [THIS-repo]
 <h2>Monitoring with grafana</h2>
 <img src="images/grafanakafka.jpg" alt="">
 </td>
-<td>
-</td>
-</tr>
 <td style="width: 50%">
 <h2>Kafka access from host</h2>
 <img src="images/console.jpg" alt="">
 </td>
+</tr>
 <td style="width: 50%">
 <h2>Multiple spark interpreters</h2>
 <img src="images/sparkui.jpg" alt="">
@@ -37,7 +35,7 @@ The base infrastructure(kafka cluster, grafana, prometeus) was taken [THIS-repo]
 | kafka_manager | hlebalbau/kafka_manager | 1.3.3.18 | 172.25.0.14:9000 |
 | prometheus | prom/prometheus | v2.8.1 | 172.25.0.15:9090 |
 | grafana | grafana/grafana | 6.1.1 | 172.25.0.16:3000 |
-| dotnet | services/core.currency-api | 0.0.1 | 172.25.0.16:9000/currency |
+| dotnet | services/core.currency-api | 0.0.1 | 172.25.0.22:9000/currency |
 | alpakka | services/alpakka.http.consumer | 0.0.1 | - |
 
 # Quickstart
@@ -72,31 +70,7 @@ You can access the default notebook by going to http://172.25.0.19:8080/#/notebo
 
 ![](images/zeppelin-1.jpg)
 
-### 2) Producer
 
-We have an interpreter called %producer.pyspark that we'll be able to run in parallel.
-
-#### Load our example dummy dataset
-
-We have made available a 1000-row version of the [US Census adult income prediction dataset](https://www.kaggle.com/johnolafenwa/us-census-data).
-
-![](images/zeppelin-2.jpg)
-
-#### Start the stream of rows
-
-We now take one row at random, and send it using our python-kafka producer. The topic will be created automatically if it doesn't exist (given that `auto.create.topics.enable` is set to true).
-
-![](images/zeppelin-3.jpg)
-
-### 3) Consumer
-
-We now use the %consumer.pyspark interpreter to run our pyspark job in parallel to the producer.
-
-#### Connect to the stream and print
-
-Now we can run the spark stream job to connect to the topic and listen to data. The job will listen for windows of 2 seconds and will print the ID and "label" for all the rows within that window.
-
-![](images/zeppelin-4.jpg)
 
 ### 4) Monitor Kafka
 
