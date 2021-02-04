@@ -18,7 +18,6 @@ The basic infrastructure (kafka cluster + manager, grafana, prometeus) was taken
 <h2>Kafka access from host</h2>
 <img src="images/console.jpg" alt="">
 </td>
-</tr>
 <td style="width: 50%">
 <h2>Multiple spark interpreters</h2>
 <img src="images/sparkui.jpg" alt="">
@@ -64,15 +63,20 @@ docker stats
 
 You can access the default notebook by going to http://172.25.0.19:8080/#/notebook/2EAB941ZD. Now we can start running the cells.
 
-### 1) Setup
+### 1) Basic architecture
 
-#### Install python-kafka dependency
+#### Non-blocking requests
 
-![](images/zeppelin-1.jpg)
+![](images/idea.jpg)
+
+The basic idea was to avoid constucions like `Await.result(request, 0 nanos)' withing Spark execution environment. Instead of this Kafka queue with Alpakka were used.
+Spark is playing role of messages mediator, but it could do some transformations (joins, maps, aggs and etc) in real-world solution.
+Apache spark cluster just put messages asynchronously in the queue where Alpakka will process them.
+Producer ===> Spark ===> Alpakka ===> WebApi (dotnet core).
+Entire pipeline is aschronous , concurrent and non-blocking from the top to bottom.
 
 
-
-### 4) Monitor Kafka
+### 2) Monitor Kafka
 
 We can now use the kafka manager to dive into the current kafka setup.
 
@@ -92,15 +96,9 @@ Optionally:
 
 If your cluster was named "Kafka", then you can go to http://172.25.0.14:9000/clusters/Kafka/topics/default_topic, where you will be able to see the partition offsets. Given that the topic was created automatically, it will have only 1 partition.
 
-![](images/zeppelin-4.jpg)
 
 #### Visualise metrics in Grafana
 
 Finally, you can access the default kafka dashboard in Grafana (username is "admin" and password is "password") by going to http://172.25.0.16:3000/d/xyAGlzgWz/kafka?orgId=1
 
 ![](images/grafanakafka.jpg)
-
-
-
-
-
