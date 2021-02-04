@@ -1,0 +1,20 @@
+*.class
+*.log
+*.cache
+
+**/target/**
+**/null
+/services/spark.restconsumer/project/target
+/services/spark.restconsumer/target
+/services/spark.restconsumer/.idea/**
+/services/core.currency-api/obj
+/services/core.currency-api/bin
+
+#IDE metadata
+*.idea
+*.vscode
+*.metals
+
+#dotnet
+
+
