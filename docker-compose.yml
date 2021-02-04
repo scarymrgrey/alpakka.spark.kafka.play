@@ -56,7 +56,7 @@ services:
       KAFKA_BROKER_ID: 2
       KAFKA_ZOOKEEPER_CONNECT: '172.25.0.11:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://172.25.0.13:29093,PLAINTEXT_HOST://localhost:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://172.25.0.13:9093,PLAINTEXT_HOST://localhost:9093
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -177,6 +177,7 @@ services:
       - "spark-worker-1"
       - "spark-worker-2"
       - "spark-master"
+      - "kafka-producer"
     networks:
       kafkanet:
         ipv4_address: 172.25.0.20
@@ -187,7 +188,6 @@ services:
       - "zookeeper"
       - "kafka1"
       - "kafka2"
-      - "kafka_manager"
     networks:
       kafkanet:
         ipv4_address: 172.25.0.21
@@ -202,12 +202,17 @@ services:
         
   alpakka:
     build: ./services/alpakka.http.consumer/
+    environment:
+      BOOTSTRAP_SERVERS: '172.25.0.12:29092'
+      CURRENCY_URL : 'http://172.25.0.22:9000/currency'
+      PARA_LEVEL : 8
     container_name: alpakka
     depends_on:
       - "zookeeper"
       - "kafka1"
       - "kafka2"
       - "core"
+      - "spark-application"
     networks:
       kafkanet:
         ipv4_address: 172.25.0.23

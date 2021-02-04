@@ -12,7 +12,7 @@ import akka.util.ByteString
 import net.liftweb.json.DefaultFormats
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.serialization.{ByteArrayDeserializer, StringDeserializer, StringSerializer,ByteArraySerializer}
+import org.apache.kafka.common.serialization.{ByteArrayDeserializer, ByteArraySerializer, StringDeserializer, StringSerializer}
 import spray.json.DefaultJsonProtocol._
 import spray.json._
 
@@ -39,18 +39,25 @@ object Main extends App {
   implicit val formats: DefaultFormats.type = DefaultFormats
 
   import actorSystem.executionContext
+  val consumerConfig = actorSystem.settings.config.getConfig("our-kafka-consumer")
+  val finalConfig = actorSystem.settings.config.getConfig("settings")
 
   val uuid = () => java.util.UUID.randomUUID().toString
-
-  val bootstrapServers = "172.25.0.12:29092"
   val cs: CurrencyService = CurrencyServiceConverter
-  val producerConfig = actorSystem.settings.config.getConfig("akka.kafka.producer")
-  val consumerConfig = actorSystem.settings.config.getConfig("our-kafka-consumer")
+
+
+  val bootstrapServers = sys.env.get("BOOTSTRAP_SERVERS").getOrElse(finalConfig.getString("bootstrap-servers"))
+  val currencyUrl = sys.env.get("CURRENCY_URL").getOrElse(finalConfig.getString("currency-api"))
+  val paraLevel : Int = sys.env.get("PARA_LEVEL").getOrElse(finalConfig.getInt("para-level")).toString.toInt
+
+  val converter = cs.convert(currencyUrl)(_)
+
   val kafkaConsumerSettings =
     ConsumerSettings(consumerConfig, new StringDeserializer, new ByteArrayDeserializer)
       .withBootstrapServers(bootstrapServers)
-      .withGroupId("group1")
+      .withGroupId("group-" + uuid())
       .withProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest")
+
   val kafkaProducerSettings = ProducerSettings(actorSystem.toClassic, new StringSerializer, new ByteArraySerializer)
     .withBootstrapServers(bootstrapServers)
 
@@ -61,9 +68,9 @@ object Main extends App {
       jsonString
     }
     .map { writeResult => // (8)
-      cs.convert(writeResult)
+      converter(writeResult)
     }
-    .mapAsync(8)(Http()(actorSystem.toClassic).singleRequest(_))
+    .mapAsync(paraLevel)(Http()(actorSystem.toClassic).singleRequest(_))
     .flatMapConcat(extractEntityData)
 
 
@@ -81,3 +88,4 @@ object Main extends App {
   }
 
 }
+

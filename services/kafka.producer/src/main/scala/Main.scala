@@ -22,6 +22,7 @@ object Producer {
       val value = "{\"value\":" + r.nextInt(1000) + ",\"from_currency\":\"PLN\",\"to_currency\":\"USD\"}"
       val record = new ProducerRecord[String, String](topic, "key", value)
       producer.send(record)
+      Thread.sleep(1000) 
     }
 
     producer.close()
