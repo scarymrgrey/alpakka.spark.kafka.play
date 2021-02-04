@@ -6,21 +6,18 @@
 
 The basic infrastructure (kafka cluster + manager, grafana, prometeus) was taken from [THIS-repo](https://github.com/EthicalML/kafka-spark-streaming-zeppelin-docker). Thank you!
 
-## High level features:
+## Overview:
 
 <table>
 <tr>
-<td style="width: 50%">
+<td style="width: 100%">
 <h2>Monitoring with grafana</h2>
 <img src="images/grafanakafka.jpg" alt="">
 </td>
-<td style="width: 50%">
-<h2>Kafka access from host</h2>
-<img src="images/console.jpg" alt="">
-</td>
-<td style="width: 50%">
-<h2>Multiple spark interpreters</h2>
-<img src="images/sparkui.jpg" alt="">
+</tr>
+<td style="width: 100%">
+<h2>Non blocking Spark</h2>
+<img src="images/idea.jpg" alt="">
 </td>
 </table>
 
@@ -34,8 +31,8 @@ The basic infrastructure (kafka cluster + manager, grafana, prometeus) was taken
 | kafka_manager | hlebalbau/kafka_manager | 1.3.3.18 | 172.25.0.14:9000 |
 | prometheus | prom/prometheus | v2.8.1 | 172.25.0.15:9090 |
 | grafana | grafana/grafana | 6.1.1 | 172.25.0.16:3000 |
-| dotnet | services/core.currency-api | 0.0.1 | 172.25.0.22:9000/currency |
-| alpakka | services/alpakka.http.consumer | 0.0.1 | - |
+| dotnet | services/core.currency-api | latest | 172.25.0.22:9000/currency |
+| alpakka | services/alpakka.http.consumer | latest | - |
 
 # Quickstart
 
@@ -59,11 +56,7 @@ To see the memory and CPU usage (which comes in handy to ensure docker has enoug
 docker stats
 ```
 
-## Accessing the notebook
-
-You can access the default notebook by going to http://172.25.0.19:8080/#/notebook/2EAB941ZD. Now we can start running the cells.
-
-### 1) Basic architecture
+## Basic architecture
 
 #### Non-blocking requests
 
