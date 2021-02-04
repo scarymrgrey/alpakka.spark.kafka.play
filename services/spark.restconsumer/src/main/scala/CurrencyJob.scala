@@ -6,10 +6,12 @@ import org.apache.spark.sql.functions._
 object CurrencyJob {
   def main(args: Array[String]): Unit = {
     val config = ConfigFactory.load("application.conf").getConfig("spark")
+
+    val sparkMaster = sys.env.get("SPARK_MASTER").getOrElse(config.getString("master"))
+
     implicit val spark: SparkSession =
       SparkSession.builder
-        //.master("spark://spark:7077")
-        .master("local[*]")
+        .master(sparkMaster)
         .appName("Currency converter")
         .getOrCreate()
     val kafkaURI = config.getString("kafka-cluster")

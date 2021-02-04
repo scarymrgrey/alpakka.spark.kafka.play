@@ -167,6 +167,8 @@ services:
       
   spark-application:
     build: ./services/spark.restconsumer/
+    environment:
+      SPARK_MASTER: 'spark://172.25.0.17:7077'
     depends_on:
       - "zookeeper"
       - "kafka1"
