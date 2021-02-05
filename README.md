@@ -72,11 +72,11 @@ The solution could be some kind of [**cooperative multitasking**](https://en.wik
 
 ##### Solution
 ![](images/idea.jpg)
-The basic idea was to avoid constucions like ~~Await.result(request, 0 nanos)~~ withing Spark execution environment. Instead of this **Kafka** with **Alpakka** were used.
+The basic idea was to avoid constucions like **~~Await.result(request, 0 nanos)~~** withing Spark execution environment. Instead of this **Kafka** with **Alpakka** were used.
 Spark is playing role of messages mediator, but it could do some transformations (joins, maps, aggs and etc) in real-world solution.
 Apache spark cluster just put messages asynchronously in the queue where Alpakka will process them.
-Producer ===> Spark ===> Alpakka(Akka streams) ===> WebApi (dotnet core).
-Entire pipeline is aschronous , concurrent and non-blocking from the top to bottom.
+Producer ===> Spark ===> Alpakka(Akka streams) ===> WebApi (dotnet core) ===> Alpakka ===> Spark ===> Consumer.
+Entire pipeline is asynchronous, concurrent and non-blocking from the top to the bottom.
 
 
 ### 2) Monitor Kafka
